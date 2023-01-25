@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, reopened]
 jobs:
   main:
     runs-on: ubuntu-22.04

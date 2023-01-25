@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/amruid/go-template/cmd/server"
+	"github.com/konrad-amtenbrink/feed/cmd/server"
 	"github.com/spf13/cobra"
 )
 

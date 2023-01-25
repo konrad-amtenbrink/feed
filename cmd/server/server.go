@@ -6,10 +6,10 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/amruid/go-template/config"
-	"github.com/amruid/go-template/db"
-	"github.com/amruid/go-template/logger"
-	"github.com/amruid/go-template/server"
+	"github.com/konrad-amtenbrink/feed/config"
+	"github.com/konrad-amtenbrink/feed/db"
+	"github.com/konrad-amtenbrink/feed/logger"
+	"github.com/konrad-amtenbrink/feed/server"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

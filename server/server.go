@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
-	api "github.com/amruid/go-template/api/v0.1"
-	"github.com/amruid/go-template/db"
 	"github.com/go-playground/validator"
+	api "github.com/konrad-amtenbrink/feed/api/v0.1"
+	"github.com/konrad-amtenbrink/feed/db"
 	"github.com/labstack/echo/v4"
 )
 

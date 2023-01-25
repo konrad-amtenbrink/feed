@@ -3,7 +3,7 @@ package logger
 import (
 	"os"
 
-	"github.com/amruid/go-template/config"
+	"github.com/konrad-amtenbrink/feed/config"
 	log "github.com/sirupsen/logrus"
 )
 

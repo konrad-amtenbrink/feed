@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/amruid/go-template/db"
 	"github.com/golang/mock/gomock"
+	"github.com/konrad-amtenbrink/feed/db"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )

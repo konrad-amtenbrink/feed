@@ -6,12 +6,12 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/amruid/go-template/config"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
+	"github.com/konrad-amtenbrink/feed/config"
 	_ "github.com/lib/pq"
 )
 

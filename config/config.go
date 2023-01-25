@@ -8,6 +8,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+type Config struct {
+	DB      DBConfig
+	Logging LoggingConfig
+	AWS     AWSConfig
+}
+
 type LoggingConfig struct {
 	Level               string
 	EnableReportCaller  bool
@@ -24,9 +30,11 @@ type DBConfig struct {
 	DisableSslMode bool
 }
 
-type Config struct {
-	DB      DBConfig
-	Logging LoggingConfig
+type AWSConfig struct {
+	Region          string
+	AccessKey       string
+	SecretAccessKey string
+	BucketName      string
 }
 
 // MustParseConfig loads the configuration from the environment
@@ -50,6 +58,12 @@ func MustParseConfig() Config {
 			Level:               mustGetEnv("LOG_LEVEL"),
 			EnableReportCaller:  mustParseBool(mustGetEnv("LOG_REPORT_CALLER")),
 			EnableTextFormatter: mustParseBool(mustGetEnv("LOG_TEXT_FORMATTER")),
+		},
+		AWS: AWSConfig{
+			Region:          mustGetEnv("AWS_REGION"),
+			AccessKey:       mustGetEnv("AWS_ACCESS_KEY_ID"),
+			SecretAccessKey: mustGetEnv("AWS_SECRET_ACCESS_KEY"),
+			BucketName:      mustGetEnv("AWS_BUCKET_NAME"),
 		},
 	}
 

@@ -13,4 +13,4 @@ COPY --from=builder /go/src/migrations /migrations
 
 EXPOSE 8080
 
-CMD ["/app server --port 8080"]
+CMD ["/app", "server", "--port", "8080"]

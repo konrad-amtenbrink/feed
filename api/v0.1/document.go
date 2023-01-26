@@ -10,24 +10,23 @@ import (
 )
 
 type (
-	CreateUserRequest struct {
-		Firstname string `json:"firstname" validate:"required"`
-		Lastname  string `json:"lastname" validate:"required"`
-		Email     string `json:"email" validate:"required,email"`
+	CreateDocumentRequest struct {
+		Title string `json:"title" validate:"required"`
+		URL   string `json:"url" validate:"required"`
 	}
 
-	CreateUserResponse struct {
-		UserId uuid.UUID `json:"user_id"`
+	CreateDocumentResponse struct {
+		DocumentId uuid.UUID `json:"document_id"`
 	}
 
-	GetUserRequest struct {
-		UserId uuid.UUID `param:"id" json:"user_id" validate:"required"`
+	GetDocumentRequest struct {
+		DocumentId uuid.UUID `param:"id" json:"document_id" validate:"required"`
 	}
 )
 
-func (a API) CreateUser() echo.HandlerFunc {
+func (a API) CreateDocument() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var req CreateUserRequest
+		var req CreateDocumentRequest
 		if err := c.Bind(&req); err != nil {
 			log.WithError(err).Debug("failed to bind request")
 			return echo.NewHTTPError(http.StatusBadRequest)
@@ -38,24 +37,23 @@ func (a API) CreateUser() echo.HandlerFunc {
 			return err
 		}
 
-		user := db.User{
-			Firstname: req.Firstname,
-			Lastname:  req.Lastname,
-			Email:     req.Email,
+		document := db.Document{
+			Title: req.Title,
+			URL:   req.URL,
 		}
-		userId, err := a.db.CreateUser(c.Request().Context(), user)
+		documentId, err := a.db.CreateDocument(c.Request().Context(), document)
 		if err != nil {
-			log.WithError(err).Debug("failed to create user")
+			log.WithError(err).Debug("failed to create document")
 			return echo.NewHTTPError(http.StatusInternalServerError)
 		}
 
-		return c.JSON(http.StatusOK, CreateUserResponse{UserId: userId})
+		return c.JSON(http.StatusOK, CreateDocumentResponse{DocumentId: documentId})
 	}
 }
 
-func (a API) GetUser() echo.HandlerFunc {
+func (a API) GetDocument() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var req GetUserRequest
+		var req GetDocumentRequest
 		if err := c.Bind(&req); err != nil {
 			log.WithError(err).Debug("failed to bind request")
 			return echo.NewHTTPError(http.StatusBadRequest)
@@ -66,12 +64,12 @@ func (a API) GetUser() echo.HandlerFunc {
 			return err
 		}
 
-		user, err := a.db.GetUserById(c.Request().Context(), req.UserId)
+		document, err := a.db.GetDocumentById(c.Request().Context(), req.DocumentId)
 		if err != nil {
-			log.WithError(err).Debug("failed to get user")
+			log.WithError(err).Debug("failed to get document")
 			return echo.NewHTTPError(http.StatusInternalServerError)
 		}
 
-		return c.JSON(http.StatusOK, user)
+		return c.JSON(http.StatusOK, document)
 	}
 }

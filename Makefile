@@ -10,5 +10,8 @@ setup: ## Setup the local dev environment
 run: ## Run the application
 	@go run main.go server --port 4201
 
+db-mock: ## Create the database mock
+	mockgen -source=db/db.go -destination=db/db_mock.go
+
 help: ## Display this help screen
 	@grep -h -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

@@ -17,8 +17,8 @@ import (
 
 type (
 	Database interface {
-		CreateUser(ctx context.Context, user User) (uuid.UUID, error)
-		GetUserById(ctx context.Context, id uuid.UUID) (User, error)
+		CreateDocument(ctx context.Context, doc Document) (uuid.UUID, error)
+		GetDocumentById(ctx context.Context, id uuid.UUID) (Document, error)
 	}
 
 	CloseFunc func() error

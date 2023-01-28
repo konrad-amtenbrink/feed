@@ -8,6 +8,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/konrad-amtenbrink/feed/db"
+	"github.com/konrad-amtenbrink/feed/storage"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )
@@ -22,8 +23,9 @@ func TestAPI_Status(t *testing.T) {
 
 	ctrl := gomock.NewController(t)
 	db := db.NewMockDatabase(ctrl)
+	storage := storage.NewMockStorage()
 
-	api := API{db}
+	api := API{db, storage}
 
 	resp := api.Status()(ctx)
 	if assert.NoError(t, resp) {

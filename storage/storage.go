@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -56,14 +57,17 @@ func connectAws(cfg config.AWSConfig) (*session.Session, error) {
 	return session, nil
 }
 
-func (bucket bucket) Upload(filename string) error {
+func (bucket bucket) Upload(filepath string) error {
 	session := bucket.session
 	uploader := s3manager.NewUploader(session)
 
-	content, err := os.Open(filename)
+	content, err := os.Open(filepath)
 	if err != nil {
 		return fmt.Errorf("uploading to aws: %v", err)
 	}
+
+	pathComponents := strings.Split(filepath, "/")
+	filename := pathComponents[len(pathComponents)-1]
 
 	_, err = uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(bucket.bucketName),
@@ -76,8 +80,8 @@ func (bucket bucket) Upload(filename string) error {
 		return fmt.Errorf("uploading to aws: %v", err)
 	}
 
-	filepath := "https://" + bucket.bucketName + "." + "s3-" + bucket.region + ".amazonaws.com/" + filename
-	log.Default().Println("File uploaded to", filepath)
+	url := "https://" + bucket.bucketName + "." + "s3-" + bucket.region + ".amazonaws.com/" + filename
+	log.Default().Println("File uploaded to", url)
 
 	return nil
 }

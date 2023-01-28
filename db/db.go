@@ -19,6 +19,7 @@ type (
 	Database interface {
 		CreateDocument(ctx context.Context, doc Document) (uuid.UUID, error)
 		GetDocuments(ctx context.Context) ([]Document, error)
+		DeleteDocumentById(ctx context.Context, id uuid.UUID) error
 		GetDocumentById(ctx context.Context, id uuid.UUID) (Document, error)
 	}
 

@@ -49,6 +49,12 @@ func (a API) CreateDocument() echo.HandlerFunc {
 		err = a.storage.Upload(documentId.String(), src)
 		if err != nil {
 			log.WithError(err).Debug("failed to create document")
+
+			err = a.db.DeleteDocumentById(c.Request().Context(), documentId)
+			if err != nil {
+				log.WithError(err).Debug("failed to delete document after creation failed - manual cleanup required")
+			}
+
 			return echo.NewHTTPError(http.StatusInternalServerError)
 		}
 

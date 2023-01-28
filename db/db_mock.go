@@ -50,6 +50,20 @@ func (mr *MockDatabaseMockRecorder) CreateDocument(ctx, doc interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDocument", reflect.TypeOf((*MockDatabase)(nil).CreateDocument), ctx, doc)
 }
 
+// DeleteDocumentById mocks base method.
+func (m *MockDatabase) DeleteDocumentById(ctx context.Context, id uuid.UUID) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDocumentById", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteDocumentById indicates an expected call of DeleteDocumentById.
+func (mr *MockDatabaseMockRecorder) DeleteDocumentById(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDocumentById", reflect.TypeOf((*MockDatabase)(nil).DeleteDocumentById), ctx, id)
+}
+
 // GetDocumentById mocks base method.
 func (m *MockDatabase) GetDocumentById(ctx context.Context, id uuid.UUID) (Document, error) {
 	m.ctrl.T.Helper()

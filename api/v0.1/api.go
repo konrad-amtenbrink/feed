@@ -25,7 +25,10 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 
 	e.Static("/static", "static")
 	e.Renderer = renderer
+
 	v1 := e.Group("/v0.1")
+
+	v1.GET("/", api.ShowHome())
 
 	v1.POST("/documents", api.CreateDocument())
 	v1.GET("/documents", api.GetDocuments())

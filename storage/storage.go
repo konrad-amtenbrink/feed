@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/konrad-amtenbrink/feed/config"
 )
@@ -17,6 +18,7 @@ import (
 type (
 	Storage interface {
 		Upload(filename string) error
+		Download(filename string) ([]byte, error)
 	}
 
 	CloseFunc func() error
@@ -84,4 +86,24 @@ func (bucket bucket) Upload(filepath string) error {
 	log.Default().Println("File uploaded to", url)
 
 	return nil
+}
+
+func (bucket bucket) Download(filename string) ([]byte, error) {
+	session := bucket.session
+	downloader := s3manager.NewDownloader(session)
+
+	buffer := &aws.WriteAtBuffer{}
+	_, err := downloader.Download(buffer,
+		&s3.GetObjectInput{
+			Bucket: aws.String(bucket.bucketName),
+			Key:    aws.String(filename),
+		})
+	if err != nil {
+		return nil, fmt.Errorf("downloading from aws: %v", err)
+	}
+
+	log.Default().Println("File downloaded: ", filename)
+	fmt.Println(buffer.Bytes())
+
+	return buffer.Bytes(), nil
 }

@@ -22,11 +22,6 @@ type (
 	GetDocumentRequest struct {
 		DocumentId uuid.UUID `param:"id" json:"document_id" validate:"required"`
 	}
-
-	GetDocumentResponse struct {
-		DocumentTitle   string `json:"document_title"`
-		DocumentContent string `json:"document_content"`
-	}
 )
 
 func (a API) CreateDocument() echo.HandlerFunc {
@@ -87,6 +82,12 @@ func (a API) GetDocument() echo.HandlerFunc {
 			return echo.NewHTTPError(http.StatusInternalServerError)
 		}
 
-		return c.JSON(http.StatusOK, document)
+		data, err := a.storage.Download(document.Title)
+		if err != nil {
+			log.WithError(err).Debug("failed to get document")
+			return echo.NewHTTPError(http.StatusInternalServerError)
+		}
+
+		return c.Blob(http.StatusOK, document.Title, data)
 	}
 }

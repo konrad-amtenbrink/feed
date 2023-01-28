@@ -44,7 +44,7 @@ func runUpload(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	err = storage.Upload(file)
+	err = storage.Upload(file, nil)
 	if err != nil {
 		log.WithError(err).Fatal("cmd: failed to upload file")
 		os.Exit(1)

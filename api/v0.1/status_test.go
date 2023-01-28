@@ -23,7 +23,7 @@ func TestAPI_Status(t *testing.T) {
 
 	ctrl := gomock.NewController(t)
 	db := db.NewMockDatabase(ctrl)
-	storage := storage.NewMockStorage()
+	storage := storage.NewMockStorage(ctrl)
 
 	api := API{db, storage}
 

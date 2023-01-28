@@ -3,9 +3,8 @@ package storage
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
-	"os"
-	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -17,7 +16,7 @@ import (
 
 type (
 	Storage interface {
-		Upload(filename string) error
+		Upload(fileId string, reader io.Reader) error
 		Download(filename string) ([]byte, error)
 	}
 
@@ -59,31 +58,21 @@ func connectAws(cfg config.AWSConfig) (*session.Session, error) {
 	return session, nil
 }
 
-func (bucket bucket) Upload(filepath string) error {
+func (bucket bucket) Upload(fileId string, reader io.Reader) error {
 	session := bucket.session
 	uploader := s3manager.NewUploader(session)
 
-	content, err := os.Open(filepath)
-	if err != nil {
-		return fmt.Errorf("uploading to aws: %v", err)
-	}
-
-	pathComponents := strings.Split(filepath, "/")
-	filename := pathComponents[len(pathComponents)-1]
-
-	_, err = uploader.Upload(&s3manager.UploadInput{
+	_, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(bucket.bucketName),
 		ACL:    aws.String("public-read"),
-		Key:    aws.String(filename),
-		Body:   content,
+		Key:    aws.String(fileId),
+		Body:   reader,
 	})
-
 	if err != nil {
 		return fmt.Errorf("uploading to aws: %v", err)
 	}
 
-	url := "https://" + bucket.bucketName + "." + "s3-" + bucket.region + ".amazonaws.com/" + filename
-	log.Default().Println("File uploaded to", url)
+	log.Default().Println("File uploaded to", bucket.bucketName, "/", fileId)
 
 	return nil
 }

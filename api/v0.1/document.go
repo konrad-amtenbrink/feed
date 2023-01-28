@@ -10,11 +10,6 @@ import (
 )
 
 type (
-	CreateDocumentRequest struct {
-		Title string `json:"title" validate:"required"`
-		URL   string `json:"url" validate:"required"`
-	}
-
 	CreateDocumentResponse struct {
 		DocumentId uuid.UUID `json:"document_id"`
 	}
@@ -26,22 +21,32 @@ type (
 
 func (a API) CreateDocument() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var req CreateDocumentRequest
-		if err := c.Bind(&req); err != nil {
-			log.WithError(err).Debug("failed to bind request")
+		title := c.FormValue("title")
+
+		file, err := c.FormFile("file")
+		if err != nil {
+			log.WithError(err).Debug("failed to retrieve file")
 			return echo.NewHTTPError(http.StatusBadRequest)
 		}
 
-		if err := c.Validate(req); err != nil {
-			log.WithError(err).Debug("failed to validate request")
-			return err
+		src, err := file.Open()
+		if err != nil {
+			log.WithError(err).Debug("failed to open file")
+			return echo.NewHTTPError(http.StatusInternalServerError)
 		}
+		defer src.Close()
 
 		document := db.Document{
-			Title: req.Title,
-			URL:   req.URL,
+			Title: title,
 		}
+
 		documentId, err := a.db.CreateDocument(c.Request().Context(), document)
+		if err != nil {
+			log.WithError(err).Debug("failed to create document")
+			return echo.NewHTTPError(http.StatusInternalServerError)
+		}
+
+		err = a.storage.Upload(documentId.String(), src)
 		if err != nil {
 			log.WithError(err).Debug("failed to create document")
 			return echo.NewHTTPError(http.StatusInternalServerError)

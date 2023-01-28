@@ -10,7 +10,6 @@ import (
 type Document struct {
 	ID        uuid.UUID `json:"id" db:"id"`
 	Title     string    `json:"title" db:"title"`
-	URL       string    `json:"url" db:"url"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 }
 
@@ -19,8 +18,8 @@ func (db database) CreateDocument(ctx context.Context, doc Document) (uuid.UUID,
 	err := db.Sqlx.GetContext(
 		ctx,
 		&lastInsertId,
-		"Insert into documents (title, url) values ($1, $2) RETURNING id",
-		doc.Title, doc.URL,
+		"Insert into documents (title) values ($1) RETURNING id",
+		doc.Title,
 	)
 
 	return lastInsertId, err

@@ -22,6 +22,11 @@ type (
 	GetDocumentRequest struct {
 		DocumentId uuid.UUID `param:"id" json:"document_id" validate:"required"`
 	}
+
+	GetDocumentResponse struct {
+		DocumentTitle   string `json:"document_title"`
+		DocumentContent string `json:"document_content"`
+	}
 )
 
 func (a API) CreateDocument() echo.HandlerFunc {
@@ -48,6 +53,18 @@ func (a API) CreateDocument() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusOK, CreateDocumentResponse{DocumentId: documentId})
+	}
+}
+
+func (a API) GetDocuments() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		documents, err := a.db.GetDocuments(c.Request().Context())
+		if err != nil {
+			log.WithError(err).Debug("failed to get documents")
+			return echo.NewHTTPError(http.StatusInternalServerError)
+		}
+
+		return c.JSON(http.StatusOK, documents)
 	}
 }
 

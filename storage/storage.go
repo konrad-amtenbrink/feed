@@ -85,14 +85,14 @@ func (bucket bucket) Download(filename string) ([]byte, error) {
 	_, err := downloader.Download(buffer,
 		&s3.GetObjectInput{
 			Bucket: aws.String(bucket.bucketName),
-			Key:    aws.String(filename),
+			Key:    aws.String(filename + ".md"),
 		})
+
 	if err != nil {
 		return nil, fmt.Errorf("downloading from aws: %v", err)
 	}
 
 	log.Default().Println("File downloaded: ", filename)
-	fmt.Println(buffer.Bytes())
 
 	return buffer.Bytes(), nil
 }

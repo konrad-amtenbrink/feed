@@ -16,7 +16,7 @@ type (
 	}
 
 	GetDocumentRequest struct {
-		DocumentId uuid.UUID `param:"id" json:"document_id" validate:"required"`
+		ID string `query:"id"`
 	}
 )
 
@@ -86,23 +86,24 @@ func (a API) GetDocument() echo.HandlerFunc {
 			return echo.NewHTTPError(http.StatusBadRequest)
 		}
 
-		if err := c.Validate(req); err != nil {
-			log.WithError(err).Debug("failed to validate request")
-			return err
+		id, err := uuid.Parse(req.ID)
+		if err != nil {
+			log.WithError(err).Debug("failed to parse id")
+			return echo.NewHTTPError(http.StatusBadRequest)
 		}
 
-		document, err := a.db.GetDocumentById(c.Request().Context(), req.DocumentId)
+		document, err := a.db.GetDocumentById(c.Request().Context(), id)
 		if err != nil {
 			log.WithError(err).Debug("failed to get document")
 			return echo.NewHTTPError(http.StatusInternalServerError)
 		}
 
-		data, err := a.storage.Download(document.Title)
+		data, err := a.storage.Download(document.ID.String())
 		if err != nil {
 			log.WithError(err).Debug("failed to get document")
 			return echo.NewHTTPError(http.StatusInternalServerError)
 		}
 
-		return c.Blob(http.StatusOK, document.Title, data)
+		return c.Blob(http.StatusOK, "text/markdown", data)
 	}
 }

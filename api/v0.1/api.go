@@ -29,10 +29,11 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 	v1 := e.Group("/v0.1")
 
 	v1.GET("/", api.ShowHome())
+	v1.GET("/:id", api.ShowReader())
 
 	v1.POST("/documents", api.CreateDocument())
 	v1.GET("/documents", api.GetDocuments())
-	v1.GET("/documents/:id", api.GetDocument())
+	v1.GET("/documents", api.GetDocument())
 
 	v1.GET("/status", api.Status())
 }

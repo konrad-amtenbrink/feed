@@ -38,3 +38,9 @@ func (a API) ShowHome() echo.HandlerFunc {
 	}
 
 }
+
+func (a API) ShowReader() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Render(http.StatusOK, "view.tmpl", nil)
+	}
+}

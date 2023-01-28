@@ -1,6 +1,8 @@
 package api
 
 import (
+	"html/template"
+
 	"github.com/konrad-amtenbrink/feed/db"
 	"github.com/konrad-amtenbrink/feed/storage"
 	"github.com/labstack/echo/v4"
@@ -12,11 +14,17 @@ type API struct {
 }
 
 func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
+	// see api/v0.1/views.go
+	renderer := &TemplateRenderer{
+		templates: template.Must(template.ParseGlob("templates/*.tmpl")),
+	}
 	api := API{
 		db:      db,
 		storage: storage,
 	}
 
+	e.Static("/static", "static")
+	e.Renderer = renderer
 	v1 := e.Group("/v0.1")
 
 	v1.POST("/documents", api.CreateDocument())

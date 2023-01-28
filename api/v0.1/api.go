@@ -2,16 +2,19 @@ package api
 
 import (
 	"github.com/konrad-amtenbrink/feed/db"
+	"github.com/konrad-amtenbrink/feed/storage"
 	"github.com/labstack/echo/v4"
 )
 
 type API struct {
-	db db.Database
+	db      db.Database
+	storage storage.Storage
 }
 
-func SetupV0_1(e *echo.Echo, db db.Database) {
+func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 	api := API{
-		db: db,
+		db:      db,
+		storage: storage,
 	}
 
 	v1 := e.Group("/v0.1")

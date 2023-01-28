@@ -10,6 +10,7 @@ import (
 	"github.com/konrad-amtenbrink/feed/db"
 	"github.com/konrad-amtenbrink/feed/logger"
 	"github.com/konrad-amtenbrink/feed/server"
+	"github.com/konrad-amtenbrink/feed/storage"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -47,7 +48,12 @@ func runStart(cmd *cobra.Command, args []string) {
 		log.WithError(err).Fatalf("failed to connect to database")
 	}
 
-	srv := server.New(db)
+	storage, _, err := storage.NewStorage(ctx, cfg.AWS)
+	if err != nil {
+		log.WithError(err).Fatal("failed to create storage")
+	}
+
+	srv := server.New(db, storage)
 	go func() {
 		if err = srv.Run(port); err != http.ErrServerClosed {
 			log.WithError(err).Errorf("failed to run server")

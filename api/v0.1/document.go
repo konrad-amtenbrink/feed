@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/konrad-amtenbrink/feed/db"
@@ -46,7 +47,10 @@ func (a API) CreateDocument() echo.HandlerFunc {
 			return echo.NewHTTPError(http.StatusInternalServerError)
 		}
 
-		err = a.storage.Upload(documentId.String(), src)
+		fileType := strings.Split(file.Filename, ".")[1]
+		updatedFileId := documentId.String() + "." + fileType
+
+		err = a.storage.Upload(updatedFileId, src)
 		if err != nil {
 			log.WithError(err).Debug("failed to create document")
 

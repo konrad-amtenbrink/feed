@@ -3,7 +3,7 @@
     <head>
         <title>feed</title>
 
-        <script src="/static/js/browse.js"></script>
+        <script src="/static/js/grid.js"></script>
         <link rel="stylesheet" href="/static/styles/styles.css" />
         <script src="https://unpkg.com/flowbite@1.5.2/dist/datepicker.js"></script>
         <link
@@ -26,17 +26,20 @@
         </script>
     </head>
     <body class="bg-white dark:bg-gray-900 m-10" onload="onLoad()">
-        <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">All files:</h2>
-        <ul id="files" class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-        </ul>
+        <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Expand your <span class="text-blue-600 dark:text-blue-500">personal knowledge</span>.</h1>
+        <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 mb-8">
+            Here at Oaks Studio we believe that the best way to learn is to learn from others.
+        </p>
         <a
             type="button"
             href="/create"
-            class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:bg-gray-700
+            class="absolute top-3 right-2 py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 dark:bg-gray-700
             m-10"
             
         >
             Create
         </a>
+        <div id="files" class="grid gap-4 grid-cols-3 grid-rows-3">
+        </div>
     </body>
 </html>

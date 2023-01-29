@@ -50,3 +50,9 @@ func (a API) ShowBrowse() echo.HandlerFunc {
 		return c.Render(http.StatusOK, "browse.tmpl", nil)
 	}
 }
+
+func (a API) ShowGrid() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Render(http.StatusOK, "grid.tmpl", nil)
+	}
+}

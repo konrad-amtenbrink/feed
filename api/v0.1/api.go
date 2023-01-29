@@ -26,10 +26,10 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 	e.Static("/static", "static")
 	e.Renderer = renderer
 
-	e.GET("/", api.ShowHome())
+	e.GET("/create", api.ShowHome())
 	e.GET("/:id", api.ShowReader())
 	e.GET("/admin", api.ShowBrowse())
-	e.GET("/grid", api.ShowGrid())
+	e.GET("/", api.ShowGrid())
 
 	v1 := e.Group("/v0.1")
 

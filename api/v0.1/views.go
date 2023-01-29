@@ -56,3 +56,9 @@ func (a API) ShowGrid() echo.HandlerFunc {
 		return c.Render(http.StatusOK, "grid.tmpl", nil)
 	}
 }
+
+func (a API) ShowOverview() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Render(http.StatusOK, "overview.tmpl", nil)
+	}
+}

@@ -29,7 +29,8 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 	e.GET("/create", api.ShowHome())
 	e.GET("/:id", api.ShowReader())
 	e.GET("/admin", api.ShowBrowse())
-	e.GET("/", api.ShowGrid())
+	e.GET("/articles", api.ShowGrid())
+	e.GET("/", api.ShowOverview())
 
 	v1 := e.Group("/v0.1")
 

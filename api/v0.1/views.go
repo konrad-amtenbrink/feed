@@ -44,3 +44,9 @@ func (a API) ShowReader() echo.HandlerFunc {
 		return c.Render(http.StatusOK, "view.tmpl", nil)
 	}
 }
+
+func (a API) ShowBrowse() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Render(http.StatusOK, "browse.tmpl", nil)
+	}
+}

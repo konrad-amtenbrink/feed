@@ -15,5 +15,9 @@ function uploadFile() {
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: data
+    }).then(response => response.text())
+    .then(raw => {
+        const data = JSON.parse(raw);
+        window.location.href = '/' + data.document_id;
     });
 }

@@ -22,6 +22,8 @@ func New(db db.Database, storage storage.Storage) *Server {
 	e.HideBanner = true
 	e.Validator = &CustomValidator{Validator: validator.New()}
 
+	ApplyMiddleware(e)
+
 	api.SetupV0_1(e, db, storage)
 
 	return &Server{

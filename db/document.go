@@ -10,6 +10,7 @@ import (
 type Document struct {
 	ID        uuid.UUID `json:"id" db:"id"`
 	Title     string    `json:"title" db:"title"`
+	UserId    string    `json:"user_id" db:"user_id"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 }
 

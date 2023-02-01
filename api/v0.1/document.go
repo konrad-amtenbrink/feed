@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
 	"github.com/konrad-amtenbrink/feed/db"
 	"github.com/labstack/echo/v4"
@@ -64,8 +65,18 @@ func (a API) CreateDocument() echo.HandlerFunc {
 
 func (a API) GetDocuments() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		currentUser := c.Get("user").(db.User)
-		documents, err := a.db.GetDocumentsByUserId(c.Request().Context(), currentUser.ID)
+		currentUser := c.Get("user").(jwt.MapClaims)
+		if currentUser["id"] == nil {
+			log.Debug("failed to get id from user")
+			return echo.NewHTTPError(http.StatusInternalServerError)
+		}
+
+		id, err := uuid.Parse(currentUser["id"].(string))
+		if err != nil {
+			log.WithError(err).Debug("failed to parse id")
+			return echo.NewHTTPError(http.StatusBadRequest)
+		}
+		documents, err := a.db.GetDocumentsByUserId(c.Request().Context(), id)
 		if err != nil {
 			log.WithError(err).Debug("failed to get documents")
 			return echo.NewHTTPError(http.StatusInternalServerError)

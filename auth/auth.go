@@ -51,7 +51,7 @@ func Parse(c echo.Context, auth string) (interface{}, error) {
 	}
 
 	if token.Valid {
-		return token.Claims.(UserAccessClaims), nil
+		return token.Claims.(jwt.MapClaims), nil
 	}
 
 	return UserAccessClaims{}, fmt.Errorf("invalid token: %v", token)

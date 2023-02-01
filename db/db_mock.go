@@ -50,6 +50,21 @@ func (mr *MockDatabaseMockRecorder) CreateDocument(ctx, doc interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDocument", reflect.TypeOf((*MockDatabase)(nil).CreateDocument), ctx, doc)
 }
 
+// CreateUser mocks base method.
+func (m *MockDatabase) CreateUser(ctx context.Context, user User) (uuid.UUID, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateUser", ctx, user)
+	ret0, _ := ret[0].(uuid.UUID)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateUser indicates an expected call of CreateUser.
+func (mr *MockDatabaseMockRecorder) CreateUser(ctx, user interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockDatabase)(nil).CreateUser), ctx, user)
+}
+
 // DeleteDocumentById mocks base method.
 func (m *MockDatabase) DeleteDocumentById(ctx context.Context, id uuid.UUID) error {
 	m.ctrl.T.Helper()
@@ -62,6 +77,20 @@ func (m *MockDatabase) DeleteDocumentById(ctx context.Context, id uuid.UUID) err
 func (mr *MockDatabaseMockRecorder) DeleteDocumentById(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDocumentById", reflect.TypeOf((*MockDatabase)(nil).DeleteDocumentById), ctx, id)
+}
+
+// DeleteUserById mocks base method.
+func (m *MockDatabase) DeleteUserById(ctx context.Context, id uuid.UUID) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteUserById", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteUserById indicates an expected call of DeleteUserById.
+func (mr *MockDatabaseMockRecorder) DeleteUserById(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUserById", reflect.TypeOf((*MockDatabase)(nil).DeleteUserById), ctx, id)
 }
 
 // GetDocumentById mocks base method.
@@ -79,17 +108,47 @@ func (mr *MockDatabaseMockRecorder) GetDocumentById(ctx, id interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDocumentById", reflect.TypeOf((*MockDatabase)(nil).GetDocumentById), ctx, id)
 }
 
-// GetDocuments mocks base method.
-func (m *MockDatabase) GetDocuments(ctx context.Context) ([]Document, error) {
+// GetDocumentsByUserId mocks base method.
+func (m *MockDatabase) GetDocumentsByUserId(ctx context.Context, userId uuid.UUID) ([]Document, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetDocuments", ctx)
+	ret := m.ctrl.Call(m, "GetDocumentsByUserId", ctx, userId)
 	ret0, _ := ret[0].([]Document)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetDocuments indicates an expected call of GetDocuments.
-func (mr *MockDatabaseMockRecorder) GetDocuments(ctx interface{}) *gomock.Call {
+// GetDocumentsByUserId indicates an expected call of GetDocumentsByUserId.
+func (mr *MockDatabaseMockRecorder) GetDocumentsByUserId(ctx, userId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDocuments", reflect.TypeOf((*MockDatabase)(nil).GetDocuments), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDocumentsByUserId", reflect.TypeOf((*MockDatabase)(nil).GetDocumentsByUserId), ctx, userId)
+}
+
+// GetUserById mocks base method.
+func (m *MockDatabase) GetUserById(ctx context.Context, id uuid.UUID) (User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserById", ctx, id)
+	ret0, _ := ret[0].(User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserById indicates an expected call of GetUserById.
+func (mr *MockDatabaseMockRecorder) GetUserById(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserById", reflect.TypeOf((*MockDatabase)(nil).GetUserById), ctx, id)
+}
+
+// GetUserByUsername mocks base method.
+func (m *MockDatabase) GetUserByUsername(ctx context.Context, username string) (User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserByUsername", ctx, username)
+	ret0, _ := ret[0].(User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserByUsername indicates an expected call of GetUserByUsername.
+func (mr *MockDatabaseMockRecorder) GetUserByUsername(ctx, username interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByUsername", reflect.TypeOf((*MockDatabase)(nil).GetUserByUsername), ctx, username)
 }

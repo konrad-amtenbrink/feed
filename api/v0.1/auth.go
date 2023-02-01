@@ -55,7 +55,7 @@ func (a API) Login() echo.HandlerFunc {
 		}
 
 		if !auth.ComparePasswords(user.Password, req.Password) {
-			log.WithError(err).Debug("wrong password for user %s", user.Username)
+			log.WithError(err).Debug("wrong password")
 			return echo.NewHTTPError(http.StatusUnauthorized)
 		}
 

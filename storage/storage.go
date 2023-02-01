@@ -18,6 +18,7 @@ type (
 	Storage interface {
 		Upload(fileId string, reader io.Reader) error
 		Download(filename string) ([]byte, error)
+		Delete(fileId string) error
 	}
 
 	CloseFunc func() error
@@ -95,4 +96,24 @@ func (bucket bucket) Download(filename string) ([]byte, error) {
 	log.Default().Println("File downloaded: ", filename)
 
 	return buffer.Bytes(), nil
+}
+
+func (bucket bucket) Delete(fileId string) error {
+	svc := s3.New(bucket.session)
+	_, err := svc.DeleteObject(&s3.DeleteObjectInput{Bucket: aws.String(bucket.bucketName), Key: aws.String(fileId)})
+	if err != nil {
+		return fmt.Errorf("deleting from aws: %v", err)
+	}
+
+	err = svc.WaitUntilObjectNotExists(&s3.HeadObjectInput{
+		Bucket: aws.String(bucket.bucketName),
+		Key:    aws.String(fileId),
+	})
+	if err != nil {
+		return fmt.Errorf("deleting from aws: %v", err)
+	}
+
+	log.Default().Println("File ", fileId, " deleted from ", bucket.bucketName)
+
+	return nil
 }

@@ -28,7 +28,7 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 
 	e.GET("/create", api.ShowHome())
 	e.GET("/:id", api.ShowReader())
-	e.GET("/admin", api.ShowBrowse())
+	e.GET("/admin", api.ShowAdmin())
 	e.GET("/articles", api.ShowGrid())
 	e.GET("/", api.ShowOverview())
 

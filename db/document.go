@@ -36,8 +36,8 @@ func (db database) DeleteDocumentById(ctx context.Context, id uuid.UUID) error {
 	return err
 }
 
-func (db database) GetDocuments(ctx context.Context) ([]Document, error) {
+func (db database) GetDocumentsByUserId(ctx context.Context, userId uuid.UUID) ([]Document, error) {
 	var docs []Document
-	err := db.Sqlx.Select(&docs, "SELECT * FROM documents ORDER BY created_at DESC")
+	err := db.Sqlx.Select(&docs, "SELECT * FROM documents WHERE user_id = $1 ORDER BY created_at DESC", userId)
 	return docs, err
 }

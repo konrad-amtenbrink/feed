@@ -37,6 +37,10 @@ type AWSConfig struct {
 	BucketName      string
 }
 
+type Auth struct {
+	SecretKey string
+}
+
 // MustParseConfig loads the configuration from the environment
 func MustParseConfig() Config {
 	err := godotenv.Load(".env")

@@ -18,9 +18,13 @@ import (
 type (
 	Database interface {
 		CreateDocument(ctx context.Context, doc Document) (uuid.UUID, error)
-		GetDocuments(ctx context.Context) ([]Document, error)
+		GetDocumentsByUserId(ctx context.Context, userId uuid.UUID) ([]Document, error)
 		DeleteDocumentById(ctx context.Context, id uuid.UUID) error
 		GetDocumentById(ctx context.Context, id uuid.UUID) (Document, error)
+		GetUserById(ctx context.Context, id uuid.UUID) (User, error)
+		GetUserByUsername(ctx context.Context, username string) (User, error)
+		CreateUser(ctx context.Context, user User) (uuid.UUID, error)
+		DeleteUserById(ctx context.Context, id uuid.UUID) error
 	}
 
 	CloseFunc func() error
@@ -71,6 +75,7 @@ func runMigrations(db *sql.DB) error {
 		return fmt.Errorf("create new migrate with db instance: %v", err)
 	}
 
+	
 	err = m.Up()
 	if err != nil && err != migrate.ErrNoChange {
 		return fmt.Errorf("running the migration: %v", err)

@@ -64,7 +64,8 @@ func (a API) CreateDocument() echo.HandlerFunc {
 
 func (a API) GetDocuments() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		documents, err := a.db.GetDocuments(c.Request().Context())
+		currentUser := c.Get("user").(db.User)
+		documents, err := a.db.GetDocumentsByUserId(c.Request().Context(), currentUser.ID)
 		if err != nil {
 			log.WithError(err).Debug("failed to get documents")
 			return echo.NewHTTPError(http.StatusInternalServerError)

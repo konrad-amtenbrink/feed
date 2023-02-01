@@ -36,6 +36,7 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 
 	v1.POST("/documents", api.CreateDocument())
 	v1.GET("/document", api.GetDocument())
+	v1.DELETE("/document", api.DeleteDocument())
 	v1.GET("/documents", api.GetDocuments())
 
 	v1.GET("/status", api.Status())

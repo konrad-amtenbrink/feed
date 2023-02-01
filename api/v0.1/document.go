@@ -14,7 +14,7 @@ type (
 		DocumentId uuid.UUID `json:"document_id"`
 	}
 
-	GetDocumentRequest struct {
+	SingleDocumentRequest struct {
 		ID string `query:"id"`
 	}
 )
@@ -76,7 +76,7 @@ func (a API) GetDocuments() echo.HandlerFunc {
 
 func (a API) GetDocument() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var req GetDocumentRequest
+		var req SingleDocumentRequest
 		if err := c.Bind(&req); err != nil {
 			log.WithError(err).Debug("failed to bind request")
 			return echo.NewHTTPError(http.StatusBadRequest)
@@ -101,5 +101,35 @@ func (a API) GetDocument() echo.HandlerFunc {
 		}
 
 		return c.Blob(http.StatusOK, "text/markdown", data)
+	}
+}
+
+func (a API) DeleteDocument() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var req SingleDocumentRequest
+		if err := c.Bind(&req); err != nil {
+			log.WithError(err).Debug("failed to bind request")
+			return echo.NewHTTPError(http.StatusBadRequest)
+		}
+
+		id, err := uuid.Parse(req.ID)
+		if err != nil {
+			log.WithError(err).Debug("failed to parse id")
+			return echo.NewHTTPError(http.StatusBadRequest)
+		}
+
+		err = a.db.DeleteDocumentById(c.Request().Context(), id)
+		if err != nil {
+			log.WithError(err).Debug("failed to delete document")
+			return echo.NewHTTPError(http.StatusInternalServerError)
+		}
+
+		err = a.storage.Delete(id.String())
+		if err != nil {
+			log.WithError(err).Debug("failed to get document")
+			return echo.NewHTTPError(http.StatusInternalServerError)
+		}
+
+		return c.JSON(http.StatusNoContent, nil)
 	}
 }

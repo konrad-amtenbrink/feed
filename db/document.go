@@ -32,7 +32,7 @@ func (db database) GetDocumentById(ctx context.Context, id uuid.UUID) (Document,
 }
 
 func (db database) DeleteDocumentById(ctx context.Context, id uuid.UUID) error {
-	_, err := db.Sqlx.ExecContext(ctx, "DELETE * FROM documents WHERE id = $1", id)
+	_, err := db.Sqlx.ExecContext(ctx, "DELETE FROM documents WHERE id = $1", id)
 	return err
 }
 

@@ -32,6 +32,7 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 
 	e.POST("/register", api.Register())
 	e.POST("/login", api.Login())
+	e.POST("/logout", api.Logout())
 
 	v1 := e.Group("/v0.1")
 	applyAuthMiddleware(v1)

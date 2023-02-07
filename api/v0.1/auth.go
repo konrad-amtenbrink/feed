@@ -69,3 +69,10 @@ func (a API) Login() echo.HandlerFunc {
 		return c.JSON(http.StatusOK, user)
 	}
 }
+
+func (a API) Logout() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		auth.Delete(c)
+		return c.JSON(http.StatusOK, nil)
+	}
+}

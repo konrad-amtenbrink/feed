@@ -42,6 +42,21 @@ func GenerateAndSet(c echo.Context, user db.User) error {
 	return nil
 }
 
+func Delete(c echo.Context) error {
+	expiresAt := time.Now().Add(-1 * time.Hour)
+
+	cookie := new(http.Cookie)
+	cookie.Name = cookieName
+	cookie.Value = ""
+	cookie.Expires = expiresAt
+	cookie.Path = "/"
+	cookie.HttpOnly = true
+
+	c.SetCookie(cookie)
+
+	return nil
+}
+
 func Parse(c echo.Context, auth string) (interface{}, error) {
 	token, err := jwt.Parse(auth, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secretKey), nil

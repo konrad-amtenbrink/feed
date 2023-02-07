@@ -14,13 +14,13 @@ type Document struct {
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 }
 
-func (db database) CreateDocument(ctx context.Context, doc Document) (uuid.UUID, error) {
+func (db database) CreateDocument(ctx context.Context, doc Document, userId uuid.UUID) (uuid.UUID, error) {
 	var lastInsertId uuid.UUID
 	err := db.Sqlx.GetContext(
 		ctx,
 		&lastInsertId,
-		"Insert into documents (title) values ($1) RETURNING id",
-		doc.Title,
+		"Insert into documents (title, user_id) values ($1, $2) RETURNING id",
+		doc.Title, userId,
 	)
 
 	return lastInsertId, err

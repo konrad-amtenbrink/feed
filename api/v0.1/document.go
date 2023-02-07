@@ -22,6 +22,18 @@ type (
 
 func (a API) CreateDocument() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		currentUser := c.Get("user").(jwt.MapClaims)
+		if currentUser["id"] == nil {
+			log.Debug("failed to get id from user")
+			return echo.NewHTTPError(http.StatusInternalServerError)
+		}
+
+		id, err := uuid.Parse(currentUser["id"].(string))
+		if err != nil {
+			log.WithError(err).Debug("failed to parse id")
+			return echo.NewHTTPError(http.StatusBadRequest)
+		}
+
 		title := c.FormValue("title")
 
 		file, err := c.FormFile("file")
@@ -41,7 +53,7 @@ func (a API) CreateDocument() echo.HandlerFunc {
 			Title: title,
 		}
 
-		documentId, err := a.db.CreateDocument(c.Request().Context(), document)
+		documentId, err := a.db.CreateDocument(c.Request().Context(), document, id)
 		if err != nil {
 			log.WithError(err).Debug("failed to create document")
 			return echo.NewHTTPError(http.StatusInternalServerError)

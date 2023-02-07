@@ -4,6 +4,9 @@ function onLoad() {
             method: 'GET',
         })
         .then(async response => {
+            if (response.status !== 200) {
+                window.location.href = '/login';
+            }
             const documents = await response.json();
 
             documents.forEach(doc => {

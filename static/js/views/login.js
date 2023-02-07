@@ -7,8 +7,11 @@ function login() {
         method: 'POST',
         headers: new Headers({'content-type': 'application/json'}),
         body: JSON.stringify(data)
-    }).then(response => response.text())
-    .then(() => {
+    })
+    .then((response) => {
+        if (response.status !== 200) {
+            window.location.href = '/login';
+        }
         window.location.href = '/';
     });
 }

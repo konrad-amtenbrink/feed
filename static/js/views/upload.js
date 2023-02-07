@@ -15,9 +15,11 @@ function uploadFile() {
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: data
-    }).then(response => response.text())
-    .then(raw => {
-        const data = JSON.parse(raw);
+    }).then(async response => {
+        if (response.status !== 200) {
+            window.location.href = '/login';
+        }
+        const data = await response.json();
         window.location.href = '/' + data.document_id;
     });
 }

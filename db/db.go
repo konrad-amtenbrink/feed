@@ -17,7 +17,7 @@ import (
 
 type (
 	Database interface {
-		CreateDocument(ctx context.Context, doc Document) (uuid.UUID, error)
+		CreateDocument(ctx context.Context, doc Document, userId uuid.UUID) (uuid.UUID, error)
 		GetDocumentsByUserId(ctx context.Context, userId uuid.UUID) ([]Document, error)
 		DeleteDocumentById(ctx context.Context, id uuid.UUID) error
 		GetDocumentById(ctx context.Context, id uuid.UUID) (Document, error)

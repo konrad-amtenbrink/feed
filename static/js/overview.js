@@ -1,5 +1,4 @@
 function onLoad() {
-    const fileName = window.location.href.split('/').pop();
     fetch(`/v0.1/documents`, {
             method: 'GET',
         })

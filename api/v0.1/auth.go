@@ -19,6 +19,7 @@ type (
 func (a API) Register() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var req AuthRequest
+		log.Println(c.Request().Body)
 		if err := c.Bind(&req); err != nil {
 			log.WithError(err).Debug("failed to bind request")
 			return echo.NewHTTPError(http.StatusBadRequest)

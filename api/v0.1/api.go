@@ -28,14 +28,13 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 	e.Static("/static", "static")
 	e.Renderer = renderer
 
-	e.GET("/", api.ShowOverview())
-	e.GET("/:id", api.ShowReader())
-	e.GET("/admin", api.ShowAdmin())
-	e.GET("/articles", api.ShowGrid())
-	e.GET("/create", api.ShowHome())
+	registerFrontend(e, api)
+
+	e.POST("/register", api.Register())
+	e.POST("/login", api.Login())
 
 	v1 := e.Group("/v0.1")
-	ApplyAuthMiddleware(v1)
+	applyAuthMiddleware(v1)
 
 	v1.GET("/documents", api.GetDocuments())
 	v1.POST("/documents", api.CreateDocument())
@@ -43,13 +42,20 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 	v1.GET("/document", api.GetDocument())
 	v1.DELETE("/document", api.DeleteDocument())
 
-	v1.POST("/register", api.Register())
-	v1.POST("/login", api.Login())
-
 	v1.GET("/status", api.Status())
 }
 
-func ApplyAuthMiddleware(e *echo.Group) {
+func registerFrontend(e *echo.Echo, api API) {
+	e.GET("/", api.ShowOverview())
+	e.GET("/:id", api.ShowReader())
+	e.GET("/admin", api.ShowAdmin())
+	e.GET("/articles", api.ShowGrid())
+	e.GET("/create", api.ShowHome())
+	e.GET("/login", api.ShowLogin())
+	e.GET("/register", api.ShowRegister())
+}
+
+func applyAuthMiddleware(e *echo.Group) {
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			access_token, err := c.Cookie("access_token")

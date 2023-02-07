@@ -62,3 +62,15 @@ func (a API) ShowOverview() echo.HandlerFunc {
 		return c.Render(http.StatusOK, "overview.tmpl", nil)
 	}
 }
+
+func (a API) ShowLogin() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Render(http.StatusOK, "login.tmpl", nil)
+	}
+}
+
+func (a API) ShowRegister() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Render(http.StatusOK, "register.tmpl", nil)
+	}
+}

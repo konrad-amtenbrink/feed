@@ -1,9 +1,11 @@
 function onLoad() {
-    const fileName = window.location.href.split('/').pop();
-    fetch(`/v0.1/documents`, {
+    fetch(`/v0.1/admin/documents`, {
             method: 'GET',
         })
         .then(async response => {
+            if (response.status !== 200) {
+                window.location.href = '/';
+            }
             const documents = await response.json();
 
             documents.forEach(doc => {

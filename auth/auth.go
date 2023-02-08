@@ -42,7 +42,7 @@ func GenerateAndSet(c echo.Context, user db.User) error {
 	return nil
 }
 
-func Delete(c echo.Context) error {
+func Delete(c echo.Context) {
 	expiresAt := time.Now().Add(-1 * time.Hour)
 
 	cookie := new(http.Cookie)
@@ -53,8 +53,6 @@ func Delete(c echo.Context) error {
 	cookie.HttpOnly = true
 
 	c.SetCookie(cookie)
-
-	return nil
 }
 
 func Parse(c echo.Context, auth string) (interface{}, error) {

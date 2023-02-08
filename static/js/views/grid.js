@@ -20,7 +20,7 @@ function onLoad() {
 
                 const descriptionElement = document.createElement('p');
                 descriptionElement.className = 'font-normal text-gray-700 dark:text-gray-400';
-                descriptionElement.innerHTML = "Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.";
+                descriptionElement.innerHTML = "This is where the description of you document would go.";
 
                 linkElement.appendChild(titleElement);
                 linkElement.appendChild(descriptionElement);

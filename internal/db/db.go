@@ -11,7 +11,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-	"github.com/konrad-amtenbrink/feed/config"
+	"github.com/konrad-amtenbrink/feed/internal/config"
 	_ "github.com/lib/pq"
 )
 

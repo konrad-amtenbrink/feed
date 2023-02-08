@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/konrad-amtenbrink/feed/db"
-	"github.com/konrad-amtenbrink/feed/storage"
+	"github.com/konrad-amtenbrink/feed/internal/db"
+	"github.com/konrad-amtenbrink/feed/internal/storage"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )

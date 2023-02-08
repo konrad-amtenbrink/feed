@@ -8,8 +8,8 @@ import (
 
 	"github.com/go-playground/validator"
 	api "github.com/konrad-amtenbrink/feed/api/v0.1"
-	"github.com/konrad-amtenbrink/feed/db"
-	"github.com/konrad-amtenbrink/feed/storage"
+	"github.com/konrad-amtenbrink/feed/internal/db"
+	"github.com/konrad-amtenbrink/feed/internal/storage"
 	"github.com/labstack/echo/v4"
 )
 

@@ -6,11 +6,11 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/konrad-amtenbrink/feed/config"
-	"github.com/konrad-amtenbrink/feed/db"
+	"github.com/konrad-amtenbrink/feed/internal/config"
+	"github.com/konrad-amtenbrink/feed/internal/db"
+	"github.com/konrad-amtenbrink/feed/internal/server"
+	"github.com/konrad-amtenbrink/feed/internal/storage"
 	"github.com/konrad-amtenbrink/feed/logger"
-	"github.com/konrad-amtenbrink/feed/server"
-	"github.com/konrad-amtenbrink/feed/storage"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

@@ -5,7 +5,7 @@ import (
 
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
-	"github.com/konrad-amtenbrink/feed/db"
+	"github.com/konrad-amtenbrink/feed/internal/db"
 	"github.com/labstack/echo/v4"
 	log "github.com/sirupsen/logrus"
 )

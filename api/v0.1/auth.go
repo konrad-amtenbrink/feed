@@ -3,8 +3,8 @@ package api
 import (
 	"net/http"
 
-	"github.com/konrad-amtenbrink/feed/auth"
-	"github.com/konrad-amtenbrink/feed/db"
+	"github.com/konrad-amtenbrink/feed/internal/auth"
+	"github.com/konrad-amtenbrink/feed/internal/db"
 	"github.com/labstack/echo/v4"
 	log "github.com/sirupsen/logrus"
 )

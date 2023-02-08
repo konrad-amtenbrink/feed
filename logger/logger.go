@@ -3,7 +3,7 @@ package logger
 import (
 	"os"
 
-	"github.com/konrad-amtenbrink/feed/config"
+	"github.com/konrad-amtenbrink/feed/internal/config"
 	log "github.com/sirupsen/logrus"
 )
 

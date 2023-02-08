@@ -44,6 +44,9 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 	v1.DELETE("/document", api.DeleteDocument())
 
 	v1.GET("/status", api.Status())
+
+	v1Admin := v1.Group("/admin")
+	v1Admin.GET("/documents", api.GetAllDocuments())
 }
 
 func registerFrontend(e *echo.Echo, api API) {

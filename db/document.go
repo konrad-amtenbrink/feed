@@ -42,3 +42,9 @@ func (db database) GetDocumentsByUserId(ctx context.Context, userId uuid.UUID) (
 	err := db.Sqlx.Select(&docs, "SELECT * FROM documents WHERE user_id = $1 ORDER BY created_at DESC", userId)
 	return docs, err
 }
+
+func (db database) GetDocuments(ctx context.Context) ([]Document, error) {
+	var docs []Document
+	err := db.Sqlx.Select(&docs, "SELECT * FROM documents ORDER BY created_at DESC")
+	return docs, err
+}

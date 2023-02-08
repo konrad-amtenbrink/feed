@@ -98,6 +98,25 @@ func (a API) GetDocuments() echo.HandlerFunc {
 	}
 }
 
+func (a API) GetAllDocuments() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		currentUser := c.Get("user").(jwt.MapClaims)
+
+		if currentUser["role"] != "admin" {
+			log.Debug("user is not admin")
+			return echo.NewHTTPError(http.StatusForbidden)
+		}
+
+		documents, err := a.db.GetDocuments(c.Request().Context())
+		if err != nil {
+			log.WithError(err).Debug("failed to get documents")
+			return echo.NewHTTPError(http.StatusInternalServerError)
+		}
+
+		return c.JSON(http.StatusOK, documents)
+	}
+}
+
 func (a API) GetDocument() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var req SingleDocumentRequest
@@ -134,6 +153,13 @@ func (a API) DeleteDocument() echo.HandlerFunc {
 		if err := c.Bind(&req); err != nil {
 			log.WithError(err).Debug("failed to bind request")
 			return echo.NewHTTPError(http.StatusBadRequest)
+		}
+
+		currentUser := c.Get("user").(jwt.MapClaims)
+
+		if currentUser["role"] != "admin" {
+			log.Debug("user is not admin")
+			return echo.NewHTTPError(http.StatusForbidden)
 		}
 
 		id, err := uuid.Parse(req.ID)

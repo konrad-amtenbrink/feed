@@ -18,14 +18,14 @@ type API struct {
 func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 	// see api/v0.1/views.go
 	renderer := &TemplateRenderer{
-		templates: template.Must(template.ParseGlob("templates/*.tmpl")),
+		templates: template.Must(template.ParseGlob("web/templates/*.tmpl")),
 	}
 	api := API{
 		db:      db,
 		storage: storage,
 	}
 
-	e.Static("/static", "static")
+	e.Static("/static", "web/static")
 	e.Renderer = renderer
 
 	registerFrontend(e, api)

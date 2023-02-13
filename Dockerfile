@@ -1,14 +1,10 @@
 FROM golang:1.19 as builder
-
 WORKDIR /go/src/
 COPY . .
+RUN go build -v -o /app .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -v -o app
-
-FROM alpine
-RUN apk add --no-cache ca-certificates
-
-COPY --from=builder /go/src/app /app
+FROM gcr.io/distroless/base
+COPY --from=builder /app /app
 COPY --from=builder /go/src/migrations /migrations
 
 EXPOSE 8080

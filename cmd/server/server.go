@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	defaultPort  = 4201
+	defaultPort  = 8080
 	portFlagName = "port"
 )
 

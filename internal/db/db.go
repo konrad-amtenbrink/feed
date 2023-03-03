@@ -53,7 +53,12 @@ func NewDatabase(ctx context.Context, cfg config.DBConfig) (Database, CloseFunc,
 }
 
 func connect(ctx context.Context, cfg config.DBConfig) (*sqlx.DB, error) {
-	database, err := sqlx.ConnectContext(ctx, "postgres", newConnectionString(cfg))
+	connectionString := cfg.ConnectionString
+	if connectionString == "" {
+		connectionString = newConnectionString(cfg)
+	}
+
+	database, err := sqlx.ConnectContext(ctx, "postgres", connectionString)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to database: %v", err)
 	}

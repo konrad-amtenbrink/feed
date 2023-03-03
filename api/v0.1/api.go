@@ -57,6 +57,7 @@ func registerFrontend(e *echo.Echo, api API) {
 	e.GET("/create", api.ShowHome())
 	e.GET("/login", api.ShowLogin())
 	e.GET("/register", api.ShowRegister())
+	e.GET("/privacy-policy", api.ShowPrivacy())
 }
 
 func applyAuthMiddleware(e *echo.Group) {

@@ -74,3 +74,9 @@ func (a API) ShowRegister() echo.HandlerFunc {
 		return c.Render(http.StatusOK, "register.tmpl", nil)
 	}
 }
+
+func (a API) ShowPrivacy() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Render(http.StatusOK, "privacy.tmpl", nil)
+	}
+}

@@ -21,13 +21,14 @@ type LoggingConfig struct {
 }
 
 type DBConfig struct {
-	Username       string
-	Password       string
-	Host           string
-	Port           int
-	Database       string
-	ConnectTimeout int
-	DisableSslMode bool
+	Username         string
+	Password         string
+	Host             string
+	Port             int
+	Database         string
+	ConnectTimeout   int
+	DisableSslMode   bool
+	ConnectionString string
 }
 
 type AWSConfig struct {
@@ -50,18 +51,19 @@ func MustParseConfig() Config {
 
 	config := Config{
 		DB: DBConfig{
-			Username:       mustGetEnv("DB_USERNAME"),
-			Password:       mustGetEnv("DB_PASSWORD"),
-			Host:           mustGetEnv("DB_HOST"),
-			Port:           mustParseInt(mustGetEnv("DB_PORT")),
-			Database:       mustGetEnv("DB_DATABASE"),
-			ConnectTimeout: mustParseInt(mustGetEnv("DB_CONNECT_TIMEOUT")),
-			DisableSslMode: mustParseBool(mustGetEnv("DB_DISABLE_SSL_MODE")),
+			Username:         getEnv("DB_USERNAME"),
+			Password:         getEnv("DB_PASSWORD"),
+			Host:             getEnv("DB_HOST"),
+			Port:             parseInt(getEnv("DB_PORT"), false),
+			Database:         getEnv("DB_DATABASE"),
+			ConnectTimeout:   parseInt(getEnv("DB_CONNECT_TIMEOUT"), false),
+			DisableSslMode:   parseBool(getEnv("DB_DISABLE_SSL_MODE"), false),
+			ConnectionString: getEnv("DATABASE_URL"),
 		},
 		Logging: LoggingConfig{
 			Level:               mustGetEnv("LOG_LEVEL"),
-			EnableReportCaller:  mustParseBool(mustGetEnv("LOG_REPORT_CALLER")),
-			EnableTextFormatter: mustParseBool(mustGetEnv("LOG_TEXT_FORMATTER")),
+			EnableReportCaller:  parseBool(mustGetEnv("LOG_REPORT_CALLER"), true),
+			EnableTextFormatter: parseBool(mustGetEnv("LOG_TEXT_FORMATTER"), true),
 		},
 		AWS: AWSConfig{
 			Region:          mustGetEnv("AWS_REGION"),
@@ -85,21 +87,40 @@ func mustGetEnv(env string) string {
 	return val
 }
 
+// Try to parse an environment variable. If it does not exist, return the default value.
+func getEnv(env string) string {
+	val, exists := os.LookupEnv(env)
+
+	if !exists {
+		return ""
+	}
+
+	return val
+}
+
 // Parse a boolean value, "true" or "false", or fatal the application.
-func mustParseBool(val string) bool {
+func parseBool(val string, mustParse bool) bool {
 	boolVal, err := strconv.ParseBool(val)
 	if err != nil {
-		log.WithError(err).Fatalf("failed to parse bool with value %s", val)
+		if mustParse {
+			log.WithError(err).Fatalf("failed to parse bool with value %s", val)
+		} else {
+			return false
+		}
 	}
 
 	return boolVal
 }
 
 // Parse an integer value, or fatal the application.
-func mustParseInt(val string) int {
+func parseInt(val string, mustParse bool) int {
 	intVal, err := strconv.Atoi(val)
 	if err != nil {
-		log.WithError(err).Fatalf("failed to parse int with value %s", val)
+		if mustParse {
+			log.WithError(err).Fatalf("failed to parse int with value %s", val)
+		} else {
+			return 0
+		}
 	}
 
 	return intVal

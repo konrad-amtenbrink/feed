@@ -80,3 +80,9 @@ func (a API) ShowPrivacy() echo.HandlerFunc {
 		return c.Render(http.StatusOK, "privacy.tmpl", nil)
 	}
 }
+
+func (a API) ShowImpressum() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.Render(http.StatusOK, "impressum.tmpl", nil)
+	}
+}

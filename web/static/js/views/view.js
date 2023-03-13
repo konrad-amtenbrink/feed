@@ -1,6 +1,6 @@
 function onLoad() {
     const fileName = window.location.href.split('/').pop();
-    fetch(`/v0.1/document?id=` + fileName, {
+    fetch(`/document?id=` + fileName, {
             method: 'GET',
         })
         .then(response => {

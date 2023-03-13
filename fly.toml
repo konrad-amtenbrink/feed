@@ -1,4 +1,4 @@
-# fly.toml file generated for feed-prod on 2023-03-03T18:29:20+01:00
+# fly.toml file generated for feed-prod on 2023-03-05T14:41:20+01:00
 
 app = "feed-prod"
 kill_signal = "SIGINT"
@@ -6,7 +6,6 @@ kill_timeout = 5
 processes = []
 
 [env]
-
 LOG_LEVEL = "debug"
 LOG_REPORT_CALLER = true
 LOG_TEXT_FORMATTER = true

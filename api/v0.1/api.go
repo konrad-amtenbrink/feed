@@ -33,14 +33,14 @@ func SetupV0_1(e *echo.Echo, db db.Database, storage storage.Storage) {
 	e.POST("/register", api.Register())
 	e.POST("/login", api.Login())
 	e.POST("/logout", api.Logout())
+	e.GET("/document", api.GetDocument())
 
 	v1 := e.Group("/v0.1")
-	applyAuthMiddleware(v1)
+	applyAuthMiddleware(v1)	
 
 	v1.GET("/documents", api.GetDocuments())
 	v1.POST("/documents", api.CreateDocument())
 
-	v1.GET("/document", api.GetDocument())
 	v1.DELETE("/document", api.DeleteDocument())
 
 	v1.GET("/status", api.Status())
